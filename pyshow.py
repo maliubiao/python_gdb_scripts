@@ -181,8 +181,8 @@ class PyObjectCmd(gdb.Command):
                 } 
         self.outdata['listdata'] = list_data
         total = int(str(obj['ob_size']))
-        for i in range(0, total): 
-            tp_str =  "(((PyTupleObject *)%s)->ob_item[%d])" % (pointer, i) 
+        for index in range(0, total): 
+            tp_str =  "(((PyTupleObject *)%s)->ob_item[%d])" % (pointer, index) 
             self.handle_type(self.decide_type(tp_str))  
         self.reculevel = 1     
  
@@ -197,8 +197,8 @@ class PyObjectCmd(gdb.Command):
         self.outdata['listdata'] = list_data
         self.reculevel = 1     
         total = int(str(obj['ob_size']))
-        for i in range(0, total): 
-            tp_str =  "(((PyListObject *)%s)->ob_item[%d])" % (pointer, i) 
+        for index in range(0, total): 
+            tp_str =  "(((PyListObject *)%s)->ob_item[%d])" % (pointer, index) 
             self.handle_type(self.decide_type(tp_str))
 
 
@@ -212,11 +212,11 @@ class PyObjectCmd(gdb.Command):
         self.outdata['dictdata'] = dict_data
         total = int(dict_data['ma_used'])
         self.reculevel = 1
-        for i in range(0, total):
+        for index in range(0, total):
             tpkey_str = "(((PyDictObject *)%s)->ma_table[%d]->me_key)"\
-                            % (pointer, i)
+                            % (pointer, index)
             tpvalue_str = "(((PyDictObject *)%s)->ma_table[%d]->me_value)"\
-                            % (pointer, i) 
+                            % (pointer, index) 
             self.handle_type(self.decide_type(tpkey_str))
             self.handle_type(self.decide_type(tpvalue_str)) 
 
