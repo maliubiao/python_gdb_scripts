@@ -130,12 +130,11 @@ class PyObjectCmd(gdb.Command):
                 print "[%s]: %s" % (i, str(v)) 
         elif tp_name == "dict": 
             print self.outdata['dictdata']
-            i = 0 
-            total = len(self.s)/2
-            while i < total:
-                print "key: %s" % str(self.s[i]) 
-                print "value: %s" % str(self.s[i+1])
-                i = i + 2
+            for key,value in zip(
+                    [x for x in self.s[0::2]], 
+                    [y for y in self.s[1::2]]
+                ):
+                print("key: %s\n value: %s\n" % key, value)
 
     def handle_int(self, tp_name, obj):
         return {
