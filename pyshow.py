@@ -130,12 +130,11 @@ class PyObjectCmd(gdb.Command):
                 print "[%s]: %s" % (i, str(v)) 
         elif tp_name == "dict": 
             print self.outdata['dictdata']
-            i = 0 
-            total = len(self.s)/2
-            while i < total:
-                print "key: %s" % str(self.s[i]) 
-                print "value: %s" % str(self.s[i+1])
-                i = i + 2
+            for key,value in zip(
+                    [x for x in self.s[0::2]], 
+                    [y for y in self.s[1::2]]
+                ):
+                print("key: %s\n value: %s\n" % key, value)
 
     def handle_int(self, tp_name, obj):
         return {
@@ -182,8 +181,8 @@ class PyObjectCmd(gdb.Command):
                 } 
         self.outdata['listdata'] = list_data
         total = int(str(obj['ob_size']))
-        for i in range(0, total): 
-            tp_str =  "(((PyTupleObject *)%s)->ob_item[%d])" % (pointer, i) 
+        for index in range(0, total): 
+            tp_str =  "(((PyTupleObject *)%s)->ob_item[%d])" % (pointer, index) 
             self.handle_type(self.decide_type(tp_str))  
         self.reculevel = 1     
  
@@ -198,8 +197,8 @@ class PyObjectCmd(gdb.Command):
         self.outdata['listdata'] = list_data
         self.reculevel = 1     
         total = int(str(obj['ob_size']))
-        for i in range(0, total): 
-            tp_str =  "(((PyListObject *)%s)->ob_item[%d])" % (pointer, i) 
+        for index in range(0, total): 
+            tp_str =  "(((PyListObject *)%s)->ob_item[%d])" % (pointer, index) 
             self.handle_type(self.decide_type(tp_str))
 
 
@@ -213,11 +212,11 @@ class PyObjectCmd(gdb.Command):
         self.outdata['dictdata'] = dict_data
         total = int(dict_data['ma_used'])
         self.reculevel = 1
-        for i in range(0, total):
+        for index in range(0, total):
             tpkey_str = "(((PyDictObject *)%s)->ma_table[%d]->me_key)"\
-                            % (pointer, i)
+                            % (pointer, index)
             tpvalue_str = "(((PyDictObject *)%s)->ma_table[%d]->me_value)"\
-                            % (pointer, i) 
+                            % (pointer, index) 
             self.handle_type(self.decide_type(tpkey_str))
             self.handle_type(self.decide_type(tpvalue_str)) 
 
