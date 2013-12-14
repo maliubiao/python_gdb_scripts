@@ -126,7 +126,7 @@ class PyObjectCmd(gdb.Command):
             print self.s[0]
         elif tp_name in "tuple list":
             print self.outdata['listdata']
-            for i,v in enumerate(self.s[:-1]):
+            for i, v in enumerate(self.s[:-1]):
                 print "[%s]: %s" % (i, str(v)) 
         elif tp_name == "dict": 
             print self.outdata['dictdata']
