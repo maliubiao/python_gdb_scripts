@@ -2,6 +2,35 @@ python-gdb-scripts
 ==================
 gdb helper scripts.
 
+##internel.pause4gdb
+###Demo
+```shell
+./test_internel.py
+waiting gdb... Press CTRL-C to proceed 
+Loaded symbols for /usr/lib64/libpython2.7.so.1.0
+0x00007f46cde701b0 in __nanosleep_nocancel () from /lib64/libc.so.6
+(gdb)bt 
+#0  0x00007f46cde701b0 in __nanosleep_nocancel () from /lib64/libc.so.6
+#1  0x00007f46cde70071 in sleep () from /lib64/libc.so.6
+#2  0x00007f46cdbb40c0 in sigusr1_handler (sig=<optimized out>)
+    at internel.c:26
+#3  <signal handler called>
+#4  0x00007f46ce877a90 in __nanosleep_nocancel ()
+    at ../sysdeps/unix/syscall-template.S:81
+#5  0x00007f46cdbb3f28 in internel_pause4gdb (object=<optimized out>, 
+    args=<optimized out>) at internel.c:107
+#6  0x00000000004a5bfe in call_function (oparg=<optimized out>, pp_stack=
+    0x7fff75819770) at Python/ceval.c:4021
+#7  PyEval_EvalFrameEx (f=<optimized out>, throwflag=throwflag@entry=0)
+    at Python/ceval.c:2666
+#8  0x00000000004a5c9c in fast_function (nk=<optimized out>, na=0, 
+    n=<optimized out>, pp_stack=0x7fff75819970, func=
+    <function at remote 0x7f46ceb6a578>) at Python/ceval.c:4107
+#9  call_function (oparg=<optimized out>, pp_stack=0x7fff75819970)
+    at Python/ceval.c:4042 
+...
+```
+
 ##pyshow PyObject *
 ###Demo
     Breakpoint 3, PyEval_EvalCodeEx (co=co@entry=0x7ffff7f81030, 
