@@ -10,20 +10,25 @@
 typedef void (*sighandler_t)(int);
 
 sighandler_t prev;
-int GDB_ATTACHED = 0; 
-int MASTERPID = 0; 
+int gdb_attached = 0; 
+int masterpid = 0; 
 
-void sigusr1_handler(int sig)
+void sigint_handler(int sig)
 { 
 	int status;
-	char buf[128]; 
-	if (GDB_ATTACHED == 0) { 
-		GDB_ATTACHED = 1; 
+	char buf[32]; 
+	if (gdb_attached == 0) { 
+		gdb_attached = 1; 
 		if (fork() == 0) {
 			signal(SIGINT, SIG_IGN);
-			snprintf(buf, 128, "gdb -p %d", MASTERPID); 
-			exit(system(buf));
+			snprintf(buf, 32, "gdb -p %d", masterpid); 
+			//call gdb
+			status = system(buf);
+			//notify main process
+			kill(getppid(), SIGINT);
+			exit(status);
 		} else {
+			//main process sleep
 			sleep(1);
 		}
 	} else {
@@ -96,20 +101,20 @@ internel_pause4gdb(PyObject *object, PyObject *args)
 	req.tv_sec = 0;
 	req.tv_nsec = 100000; 
 	
-	MASTERPID = getpid();
+	masterpid = getpid();
 
-	prev = signal(SIGINT, sigusr1_handler);	
+	prev = signal(SIGINT, sigint_handler);	
 	if (prev < 0) {
 		Py_RETURN_FALSE;
 	} 
 	PySys_WriteStdout("waiting gdb... Press CTRL-C to proceed\n");
 	while (1) {
 		nanosleep(&req, 0);
-		if (GDB_ATTACHED == 0)
+		if (gdb_attached == 0)
 			continue;
 		else { 
 			PySys_WriteStdout("gdb attached...\n"); 
-			GDB_ATTACHED = 0;
+			gdb_attached = 0;
 			Py_RETURN_TRUE;
 		}		
 	}
