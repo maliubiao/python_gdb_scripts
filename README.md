@@ -29,53 +29,57 @@ Loaded symbols for /usr/lib64/libpython2.7.so.1.0
 #9  call_function (oparg=<optimized out>, pp_stack=0x7fff75819970)
     at Python/ceval.c:4042 
 ...
-```
-
+``` 
 ##pyshow PyObject *
 ###Demo
-    Breakpoint 3, PyEval_EvalCodeEx (co=co@entry=0x7ffff7f81030, 
-        globals=globals@entry=0x6252c0, locals=locals@entry=0x6252c0, 
-        args=args@entry=0x0, argcount=argcount@entry=0, kws=kws@entry=0x0, 
-        kwcount=kwcount@entry=0, defs=defs@entry=0x0, defcount=defcount@entry=0, 
-        closure=closure@entry=0x0) at Python/ceval.c:3018
-    3018    in Python/ceval.c
-    (gdb) pyshow co->co_filename
-    {'length': '32', 'type': u'str', 'value': u'/usr/lib64/python2.7/UserDict.py'} 
-    (gdb) pyshow globals
-    {'type': u'dict', 'ma_fill': '5', 'ma_used': '5'}
-    key: {'length': '12', 'type': u'str', 'value': u'__builtins__'}
-    value: {'type': 'dict', 'value': '0x621e70'}
-    key: {'length': '8', 'type': u'str', 'value': u'__name__'}
-    value: {'length': '8', 'type': u'str', 'value': u'UserDict'}
-    key: {'length': '8', 'type': u'str', 'value': u'__file__'}
-    value: {'length': '33', 'type': u'str', 'value': u'/usr/lib64/python2.7/UserDict.pyc'} 
-    (gdb) pyshow co->co_names
-    {'type': u'tuple', 'size': '28'}
-    [0]: {'length': '8', 'type': u'str', 'value': u'__name__'}
-    [1]: {'length': '10', 'type': u'str', 'value': u'__module__'}
-    [2]: {'length': '4', 'type': u'str', 'value': u'None'}
-    [3]: {'length': '8', 'type': u'str', 'value': u'__init__'}
-    [4]: {'length': '8', 'type': u'str', 'value': u'__repr__'}
-    [5]: {'length': '7', 'type': u'str', 'value': u'__cmp__'}
-    [6]: {'length': '8', 'type': u'str', 'value': u'__hash__'}
-    [7]: {'length': '7', 'type': u'str', 'value': u'__len__'}
-    [8]: {'length': '11', 'type': u'str', 'value': u'__getitem__'}
-    [9]: {'length': '11', 'type': u'str', 'value': u'__setitem__'}
-    [10]: {'length': '11', 'type': u'str', 'value': u'__delitem__'}
-    [11]: {'length': '5', 'type': u'str', 'value': u'clear'}
-    [12]: {'length': '4', 'type': u'str', 'value': u'copy'}
-    [13]: {'length': '4', 'type': u'str', 'value': u'keys'}
-    [14]: {'length': '5', 'type': u'str', 'value': u'items'}
-    [15]: {'length': '9', 'type': u'str', 'value': u'iteritems'}
-    [16]: {'length': '8', 'type': u'str', 'value': u'iterkeys'}
-    [17]: {'length': '10', 'type': u'str', 'value': u'itervalues'}
-    [18]: {'length': '6', 'type': u'str', 'value': u'values'}
-    [19]: {'length': '7', 'type': u'str', 'value': u'has_key'}
-    [20]: {'length': '6', 'type': u'str', 'value': u'update'}
-    [21]: {'length': '3', 'type': u'str', 'value': u'get'} 
-    [22]: {'length': '10', 'type': u'str', 'value': u'setdefault'}
-    [23]: {'length': '3', 'type': u'str', 'value': u'pop'}
-    [24]: {'length': '7', 'type': u'str', 'value': u'popitem'}
-    [25]: {'length': '12', 'type': u'str', 'value': u'__contains__'}
-    [26]: {'length': '11', 'type': u'str', 'value': u'classmethod'}
-    [27]: {'length': '8', 'type': u'str', 'value': u'fromkeys'}
+```shell
+Breakpoint 3, PyEval_EvalCodeEx (co=co@entry=0x7ffff7f81030, 
+globals=globals@entry=0x6252c0, locals=locals@entry=0x6252c0, 
+args=args@entry=0x0, argcount=argcount@entry=0, kws=kws@entry=0x0, 
+kwcount=kwcount@entry=0, defs=defs@entry=0x0, defcount=defcount@entry=0, 
+closure=closure@entry=0x0) at Python/ceval.c:3018
+3018    in Python/ceval.c
+(gdb) pyshow f->f_code->co_filename
+{'length': 48,
+ 'type': u'str',
+ 'value': '/data/project/py/Python-2.7.3/Lib/_weakrefset.py'}
+(gdb) pyshow globals 
+```
+```shell
+(gdb) pyshow f->f_globals
+{'ma_fill': 8,
+ 'ma_mask': 31,
+ 'ma_used': 8,
+ 'objects': [({'length': 8, 'type': u'str', 'value': '__file__'},
+              {'length': 49,
+               'type': u'str',
+               'value': '/data/project/py/Python-2.7.3/Lib/_weakrefset.pyc'}),
+             ({'length': 8, 'type': u'str', 'value': '__name__'},
+              {'length': 11, 'type': u'str', 'value': '_weakrefset'})],
+ 'type': u'dict'}
+```
+```shell
+(gdb) pyshow f->f_builtins
+{'ma_fill': 137,
+ 'ma_mask': 511,
+ 'ma_used': 137,
+ 'objects': [({'length': 5, 'type': u'str', 'value': 'False'},
+              {'type': u'bool', 'value': '0'}),
+             ({'length': 4, 'type': u'str', 'value': 'True'},
+              {'type': u'bool', 'value': '1'}),
+             ({'length': 8, 'type': u'str', 'value': '__name__'},
+              {'length': 11, 'type': u'str', 'value': '__builtin__'}),
+             ({'length': 7, 'type': u'str', 'value': '__doc__'},
+              {'length': 126,
+               'type': u'str',
+               'value': "Built-in functions, exceptions, and other objects.\n\nNoteworthy: None is the `nil' object; Ellipsis represents `...' in slices."}),
+             ({'length': 9, 'type': u'str', 'value': '__debug__'},
+              {'type': u'bool', 'value': '1'})],
+ 'type': u'dict'}
+```
+```shell
+(gdb) pyshow f->f_code->co_code
+{'length': '332',
+ 'type': u'str',
+ 'value': 'e\x00\x00Z\x01\x00d\x1f\x00d\x00\x00\x84\x01\x00Z\x03\x00d\x01\x00\x84\x00\x00Z\x04\x00d\x02\x00\x84\x00\x00Z\x05\x00d\x03\x00\x84\x00\x00Z\x06\x00d\x04\x00\x84\x00\x00Z\x07\x00d\x05\x00\x84\x00\x00Z\x08\x00d\x1f\x00Z\t\x00d\x06\x00\x84\x00\x00Z\n\x00d\x07\x00\x84\x00\x00Z\x0b\x00d\x08\x00\x84\x00\x00Z\x0c\x00d\t\x00\x84\x00\x00Z\r\x00d\n\x00\x84\x00\x00Z\x0e\x00d\x0b\x00\x84\x00\x00Z\x0f\x00d\x0c\x00\x84\x00\x00Z\x10\x00d\r\x00\x84\x00\x00Z\x11\x00d\x0e\x00\x84\x00\x00Z\x12\x00d\x0f\x00\x84\x00\x00Z\x13\x00e\x13\x00Z\x14\x00d\x10\x00\x84\x00\x00Z\x15\x00d\x11\x00\x84\x00\x00Z\x16\x00d\x12\x00\x84\x00\x00Z\x17\x00e\x17\x00Z\x18\x00d\x13\x00\x84\x00\x00Z\x19\x00d\x14\x00\x84\x00\x00Z\x1a\x00d\x15\x00\x84\x00\x00Z\x1b\x00e\x1b\x00Z\x1c\x00d\x16\x00\x84\x00\x00Z\x1d\x00d\x17\x00\x84\x00\x00Z\x1e\x00e\x1e\x00Z\x1f\x00d\x18\x00\x84\x00\x00Z \x00d\x19\x00\x84\x00\x00Z!\x00d\x1a\x00\x84\x00\x00Z"\x00e"\x00Z#\x00d\x1b\x00\x84\x00\x00Z$\x00d\x1c\x00\x84\x00\x00Z%\x00d\x1d\x00\x84\x00\x00Z&\x00e&\x00Z\'\x00d\x1e\x00\x84\x00\x00Z(\x00RS'}
+```
