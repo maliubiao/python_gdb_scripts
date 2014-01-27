@@ -21,8 +21,8 @@ class ReadMemory(gdb.Command):
             raise gdb.GdbError("usage ptr length") 
         ptr1 = str(gdb.parse_and_eval(p1).type)
         obj = gdb.parse_and_eval("*%s" % p1)
-        if not "*" in ptr1:
-            raise gdb.GdbError("%s is not a ptr" % p1)
+        #if not "*" in ptr1:
+        #    raise gdb.GdbError("%s is not a ptr" % p1)
         inferior = gdb.selected_inferior() 
         value = inferior.read_memory(int(str(obj.address), 16), l) 
         k = str(value)
