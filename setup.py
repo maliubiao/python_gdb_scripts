@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 from distutils.core import setup, Extension
 
-m = Extension("internel",
-        sources=["internel.c"],
+m = Extension("internal",
+        sources=["internal.c"],
         extra_compile_args=["-Wall", "-Werror" ])
 
-setup(name = "internel", description = "gdb helper",
+setup(name = "internal", description = "gdb helper",
         ext_modules = [m])
 

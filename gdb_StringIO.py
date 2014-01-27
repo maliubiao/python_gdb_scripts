@@ -39,8 +39,7 @@ class StringO_New_BP(gdb.Breakpoint):
                 "pos": str(O_object["pos"]),
                 "string_size": str(O_object["string_size"]),
                 "buf_size": str(O_object["buf_size"]),
-                "softspace": str(O_object["softspace"]),
-                "object": O_object
+                "softspace": str(O_object["softspace"]), 
                 } 
         if address in O_s:
             if O_s[address]:
@@ -49,16 +48,58 @@ class StringO_New_BP(gdb.Breakpoint):
                 O_s[address] = {"new": infos}
         else:
             O_s[address] = {"new": infos}
+        O_s[address]["object"] = O_object
         print "newO_obj", O_s[address]
+
+class StringO_Write_BP(gdb.Breakpoint):
+    def __init__(self):
+        super(StringO_Write_BP, self).__init__(
+                spec = "cStringIO.c:437",
+                type = gdb.WP_READ,
+                wp_class = gdb.BP_READ_WATCHPOINT
+                )
+    def stop(self):
+        O_object = gdb_eval("self")
+        address = str(O_object.address)
+        infos = {
+                "pos": str(O_object["pos"]),
+                "string_size": str(O_object["string_size"]),
+                "buf_size": str(O_object["buf_size"]),
+                "softspace": str(O_object["softspace"]), 
+                } 
+        if address in O_s:
+            O_s[address]["after_write"] = infos 
+        print "after_write", O_s[address]
+
+class StringO_Writelines_BP(gdb.Breakpoint):
+    def __init__(self):
+        super(StringO_Writelines_BP, self).__init__(
+                spec = "cStringIO.c:487",
+                type = gdb.WP_READ,
+                wp_class = gdb.BP_READ_WATCHPOINT
+                )
+    def stop(self):
+        O_object = gdb_eval("self")
+        address = str(O_object.address)
+        infos = {
+                "pos": str(O_object["pos"]),
+                "string_size": str(O_object["string_size"]),
+                "buf_size": str(O_object["buf_size"]),
+                "softspace": str(O_object["softspace"]), 
+                } 
+        if address in O_s:
+            O_s[address]["after_writelines"] = infos 
+        print "after_writelines", O_s[address]
+        
 
 class StringO_Dealloc_BP(gdb.Breakpoint):
     def __init__(self):
         super(StringO_Dealloc_BP, self).__init__(
                 spec = "cStringIO.c:518",
-                type = gdb.BP_WATCHPOINT,
-                wp_class = gdb.WP_READ
+                wp_class = gdb.BP_WATCHPOINT,
+                type = gdb.WP_READ
                 )
-        self.gdb_O_object_type = gdb.lookup_type("Oobject")
+        
     def stop(self):
         O_object = gdb_eval("self")
         address = str(O_object.address) 
@@ -76,5 +117,9 @@ class StringO_Dealloc_BP(gdb.Breakpoint):
                 O_s[address] = {"dealloc": infos}
         else:
             O_s[address] = {"dealloc": infos}
+        print "dealloc", O_s[address]
 
 StringO_New_BP()
+StringO_Dealloc_BP()
+StringO_Write_BP()
+StringO_Writelines_BP()
