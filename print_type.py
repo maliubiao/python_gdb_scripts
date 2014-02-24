@@ -1,33 +1,15 @@
 import gdb
+import sys
+import os.path
 
-types_dict = {
-        gdb.TYPE_CODE_PTR: "PTR",
-        gdb.TYPE_CODE_ARRAY: "ARRAY",
-        gdb.TYPE_CODE_STRUCT: "STRUCT",
-        gdb.TYPE_CODE_UNION: "UNION",
-        gdb.TYPE_CODE_ENUM: "ENUM",
-        gdb.TYPE_CODE_FLAGS: "FLAGS",
-        gdb.TYPE_CODE_FUNC: "FUNC",
-        gdb.TYPE_CODE_INT: "INT",
-        gdb.TYPE_CODE_VOID: "VOID",
-        gdb.TYPE_CODE_RANGE: "RANGE",
-        gdb.TYPE_CODE_STRING: "STRING",
-        gdb.TYPE_CODE_ERROR: "ERROR",
-        gdb.TYPE_CODE_METHOD: "METHOD",
-        gdb.TYPE_CODE_METHODPTR: "METHODPTR",
-        gdb.TYPE_CODE_REF: "REF",
-        gdb.TYPE_CODE_CHAR: "CHAR",
-        gdb.TYPE_CODE_BOOL: "BOOL",
-        gdb.TYPE_CODE_COMPLEX: "COMPLEX",
-        gdb.TYPE_CODE_TYPEDEF: "TYPEDEF",
-        gdb.TYPE_CODE_NAMESPACE: "NAMESPACE",
-        gdb.TYPE_CODE_INTERNAL_FUNCTION: "INTERNAL_FUNCTION"
-        }
+sys.path.append(os.path.dirname(__file__))
+
+from gdb_shared import types_dict 
 
 class PrintTypeCmd(gdb.Command):
     def __init__(self):
         super(PrintTypeCmd, self).__init__(
-                name = "pt",
+                name = "print_type",
                 command_class = gdb.COMMAND_DATA,
                 completer_class = gdb.COMPLETE_SYMBOL)
     def invoke(self, argument, from_tty): 
